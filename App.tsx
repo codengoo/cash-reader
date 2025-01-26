@@ -1,118 +1,109 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {useEffect, useState} from 'react';
+import {DeviceEventEmitter, View} from 'react-native';
+import NativeSmsReader from './specs/NativeSmsReader';
+import Sound from 'react-native-sound';
+import * as TTS from 'google-tts-api';
+import {resolve} from 'url';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+interface IMessage {
+  address: string;
+  body: string;
+  data: number;
 }
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [msg, setMsg] = useState<IMessage[]>([]);
+  const [isRunning, setRunning] = useState<boolean>(false);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const getUrl = (msg: string) => {
+    return TTS.getAudioUrl(msg, {
+      lang: 'vi',
+      slow: true,
+    });
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  const extract = (text: string) => {
+    const amountPattern = /\+(([\d\.])*) VND/g;
+    const namePattern = /ND:.*?([A-Z]{2,}(\s?[A-Z]*\s)*[A-Z]+)/g;
+
+    return {
+      amount: [...text.matchAll(amountPattern)][0][1],
+      name: [...text.matchAll(namePattern)]?.[0]?.[1] || '',
+    };
+  };
+
+  const generatePrompt = (msg: string) => {
+    const {amount, name} = extract(msg);
+    console.log(amount, name);
+
+    return name.trim().length > 0
+      ? `Vừa nhận được ${amount} đồng từ ${name}`
+      : `Vừa nhận được ${amount} đồng`;
+  };
+
+  const playSound = async (text: string) => {
+    const url = getUrl(text);
+
+    return new Promise((resolve, reject) => {
+      const sound = new Sound(url, '', error => {
+        if (error) return reject('Failed to load the sound');
+
+        sound.play(success => {
+          sound.release();
+          if (!success) reject('Playback failed');
+          resolve('Sound played successfully');
+        });
+      });
+    });
+  };
+
+  const play = async () => {
+    if (msg.length <= 0) return;
+    const tmp = [...msg];
+    console.log(tmp);
+
+    setMsg([]);
+    setRunning(true);
+    while (tmp.length > 0) {
+      const current = tmp.pop();
+      if (!current) continue;
+
+      try {
+        const prompt = generatePrompt(current.body);
+        await playSound(prompt);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    setRunning(false);
+  };
+
+  useEffect(() => {
+    if (!isRunning) play();
+  }, [msg]);
+
+  useEffect(() => {
+    if (!isRunning) play();
+  }, [isRunning]);
+
+  useEffect(() => {
+    NativeSmsReader.onNewMessage(null, () => {});
+    const subscription = DeviceEventEmitter.addListener(
+      'onSmsReceived',
+      function (data: IMessage) {
+        setMsg(msg => [data, ...msg]);
+        console.log('message come: ', [data, ...msg]);
+      },
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  return <View></View>;
+}
 
 export default App;
