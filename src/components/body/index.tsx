@@ -1,8 +1,16 @@
+import {
+  selectMostRecentTransactions,
+  selectRecentTransactions,
+  useAppSelector,
+} from '@src/store';
 import {ScrollView, Text, View} from 'react-native';
-import styles from './styles';
 import {Box} from './components/box';
+import styles from './styles';
 
 export function BodyHome() {
+  const mostRecentTrans = useAppSelector(selectMostRecentTransactions);
+  const recentTrans = useAppSelector(selectRecentTransactions);
+
   return (
     <ScrollView
       contentContainerStyle={styles.innerContainer}
@@ -11,7 +19,9 @@ export function BodyHome() {
         <Text style={styles.title}>Lịch sử</Text>
 
         <View style={styles.wrapper}>
-          <Box isRecent={false} />
+          {mostRecentTrans.map(item => (
+            <Box isRecent={false} data={item} key={item.date} />
+          ))}
         </View>
       </View>
 
@@ -19,14 +29,9 @@ export function BodyHome() {
         <Text style={styles.session}>Gần đây</Text>
 
         <View style={styles.wrapper}>
-          <Box />
-          <Box />
-          <Box />
-          <Box />
-          <Box />
-          <Box />
-          <Box />
-          <Box />
+          {recentTrans.map(item => (
+            <Box data={item} key={item.date} />
+          ))}
         </View>
       </View>
     </ScrollView>
