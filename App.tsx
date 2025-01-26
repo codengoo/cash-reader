@@ -4,6 +4,9 @@ import NativeSmsReader from './specs/NativeSmsReader';
 import Sound from 'react-native-sound';
 import * as TTS from 'google-tts-api';
 import {resolve} from 'url';
+import {HeaderHome} from './src/components/header';
+import {BodyHome} from '@components/body';
+import {COLORS} from '@src/constants';
 
 interface IMessage {
   address: string;
@@ -103,7 +106,21 @@ function App(): React.JSX.Element {
     };
   }, []);
 
-  return <View></View>;
+  return (
+    <View
+      style={{
+        display: 'flex',
+        overflow: "hidden",
+        flex: 1,
+        // height:"50%",
+        flexDirection: 'column',
+        gap: 40,
+        backgroundColor: COLORS.primary,
+      }}>
+      <HeaderHome />
+      <BodyHome />
+    </View>
+  );
 }
 
 export default App;
