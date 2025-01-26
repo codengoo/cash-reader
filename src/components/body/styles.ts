@@ -1,13 +1,12 @@
 import {COLORS, PADDING} from '@src/constants';
 import {StyleSheet} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: COLORS.primary,
     paddingTop: PADDING.xl,
-    overflow: "scroll"
+    overflow: 'scroll',
   },
 
   innerContainer: {
@@ -18,7 +17,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     gap: 40,
     backgroundColor: COLORS.white,
-    paddingBottom: 60
+    minHeight: '100%',
+    paddingBottom: 60,
   },
 
   title: {
@@ -40,6 +40,26 @@ const styles = StyleSheet.create({
   wrapper: {
     display: 'flex',
     gap: 10,
+  },
+
+  action: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  clear: {
+    display: 'flex',
+    backgroundColor: COLORS.yellow200,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+
+  textAction: {
+    fontFamily: 'Lexend-SemiBold',
+    color: COLORS.textPrimary,
   },
 });
 

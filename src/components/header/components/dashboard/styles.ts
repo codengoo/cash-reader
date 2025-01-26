@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
 
   boxContainer: {
     borderRadius: 32,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: COLORS.textPrimary,
     backgroundColor: COLORS.secondary,
     padding: PADDING.xl,
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lexend-Bold',
     color: COLORS.textPrimary,
     marginTop: 12,
+    fontSize: 16,
     textAlign: "right",
     marginRight: PADDING.xl
   },

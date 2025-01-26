@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {extract} from '@src/utils';
 
 export interface IMessage {
@@ -25,6 +25,9 @@ const initialState: MoneyState = {
   transaction: [],
 };
 
+// const space = 2 * 1000;
+const space = 10 * 60 * 1000; // 10 minutes
+
 export const moneySlice = createSlice({
   name: 'money',
   initialState,
@@ -42,34 +45,37 @@ export const moneySlice = createSlice({
       });
       state.total += amount;
     },
+
+    resetTransaction: state => {
+      state.total = 0;
+      state.transaction = [];
+    },
   },
   selectors: {
     selectTotalMoney: state => state.total,
-    selectMostRecentTransactions: state => {
-      // const space = 10 * 60 * 1000;
-      const space = 2 * 1000;
-      return state.transaction.filter(
-        trans => Date.now() - Number(trans.date) <= space,
-      );
-    },
-
-    selectRecentTransactions: state => {
-      // const space = 10 * 60 * 1000;
-      const space = 2 * 1000;
-      return state.transaction.filter(
-        trans => Date.now() - Number(trans.date) >= space,
-      );
-    },
+    selectTransaction: state => state.transaction,
     selectNumberTransaction: state => state.transaction.length,
   },
 });
 
-export const {addTransaction} = moneySlice.actions;
-export const {
-  selectMostRecentTransactions,
-  selectRecentTransactions,
-  selectNumberTransaction,
-  selectTotalMoney,
-} = moneySlice.selectors;
+export const {addTransaction, resetTransaction} = moneySlice.actions;
+export const {selectTransaction, selectNumberTransaction, selectTotalMoney} =
+  moneySlice.selectors;
+
+export const selectMostRecentTransactions = createSelector(
+  [moneySlice.selectors.selectTransaction],
+  trans =>
+    trans.filter(t => {
+      return Date.now() - Number(t.date) <= space;
+    }),
+);
+
+export const selectRecentTransactions = createSelector(
+  [moneySlice.selectors.selectTransaction],
+  trans =>
+    trans.filter(t => {
+      return Date.now() - Number(t.date) > space;
+    }),
+);
 
 export default moneySlice.reducer;

@@ -5,8 +5,8 @@ import {useEffect, useState} from 'react';
 import {DeviceEventEmitter, View} from 'react-native';
 import NativeSmsReader from '../specs/NativeSmsReader';
 import {COLORS} from './constants';
-import {addTransaction, IMessage, useAppDispatch} from './store';
-import {extract, generatePrompt, playSound} from './utils';
+import {IMessage, addTransaction, useAppDispatch} from './store';
+import {generatePrompt, playSound} from './utils';
 
 export default function MainApp() {
   const [msg, setMsg] = useState<IMessage[]>([]);
@@ -47,7 +47,7 @@ export default function MainApp() {
   }, [isRunning]);
 
   useEffect(() => {
-    NativeSmsReader.onNewMessage(null, () => {});
+    NativeSmsReader.onNewMessage('VTMONEY', () => {});
     const subscription = DeviceEventEmitter.addListener(
       'onSmsReceived',
       function (data: IMessage) {
