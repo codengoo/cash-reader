@@ -5,8 +5,9 @@ import {MessageBS} from '@components/bs';
 import {CRBottomSheet} from '@components/ui';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useEffect, useRef, useState} from 'react';
-import {DeviceEventEmitter, PixelRatio, Text, View} from 'react-native';
+import {DeviceEventEmitter, Dimensions, StatusBar, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import NativeSmsReader from '../specs/NativeSmsReader';
 import {COLORS} from './constants';
 import {IMessage, addTransaction, useAppDispatch} from './store';
@@ -15,7 +16,7 @@ import {generatePrompt, playSound} from './utils';
 export default function MainApp() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [msg, setMsg] = useState<IMessage[]>([]);
-  const [currentMsgId, setCurrentMsgId] = useState<string>("");
+  const [currentMsgId, setCurrentMsgId] = useState<string>('');
   const [isRunning, setRunning] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -74,24 +75,33 @@ export default function MainApp() {
   };
 
   return (
-    <GestureHandlerRootView style={{flex: 1, backgroundColor: 'grey'}}>
-      <View
+    <SafeAreaView style={{flex: 1}}>
+      <GestureHandlerRootView
         style={{
-          display: 'flex',
-          overflow: 'hidden',
           flex: 1,
-          flexDirection: 'column',
-          gap: 40,
-          backgroundColor: COLORS.primary,
+          backgroundColor: 'grey',
+          // paddingBottom:
+          //   Dimensions.get('screen').height -
+          //   Dimensions.get('window').height -
+          //   (StatusBar.currentHeight ?? 0),
         }}>
-        <Text>{}</Text>
-        <HeaderHome />
-        <BodyHome onShowMessage={handleShowMessage} />
+        <View
+          style={{
+            display: 'flex',
+            overflow: 'hidden',
+            flex: 1,
+            flexDirection: 'column',
+            gap: 40,
+            backgroundColor: COLORS.primary,
+          }}>
+          <HeaderHome />
+          <BodyHome onShowMessage={handleShowMessage} />
 
-        <CRBottomSheet ref={bottomSheetRef}>
-          <MessageBS msgId={currentMsgId} />
-        </CRBottomSheet>
-      </View>
-    </GestureHandlerRootView>
+          <CRBottomSheet ref={bottomSheetRef}>
+            <MessageBS msgId={currentMsgId} />
+          </CRBottomSheet>
+        </View>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 }

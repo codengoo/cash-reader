@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: SPACE.xl,
-    paddingBottom: 2 * PADDING.xl,
   },
 
   title: {
