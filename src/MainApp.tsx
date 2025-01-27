@@ -1,15 +1,21 @@
 import {BodyHome} from '@components/body';
 import {HeaderHome} from '@components/header';
 
-import {useEffect, useState} from 'react';
-import {DeviceEventEmitter, View} from 'react-native';
+import {MessageBS} from '@components/bs';
+import {CRBottomSheet} from '@components/ui';
+import BottomSheet from '@gorhom/bottom-sheet';
+import {useEffect, useRef, useState} from 'react';
+import {DeviceEventEmitter, PixelRatio, Text, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NativeSmsReader from '../specs/NativeSmsReader';
 import {COLORS} from './constants';
 import {IMessage, addTransaction, useAppDispatch} from './store';
 import {generatePrompt, playSound} from './utils';
 
 export default function MainApp() {
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const [msg, setMsg] = useState<IMessage[]>([]);
+  const [currentMsgId, setCurrentMsgId] = useState<string>("");
   const [isRunning, setRunning] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -62,18 +68,30 @@ export default function MainApp() {
     };
   }, []);
 
+  const handleShowMessage = (msgId: string) => {
+    setCurrentMsgId(msgId);
+    bottomSheetRef.current?.expand();
+  };
+
   return (
-    <View
-      style={{
-        display: 'flex',
-        overflow: 'hidden',
-        flex: 1,
-        flexDirection: 'column',
-        gap: 40,
-        backgroundColor: COLORS.primary,
-      }}>
-      <HeaderHome />
-      <BodyHome />
-    </View>
+    <GestureHandlerRootView style={{flex: 1, backgroundColor: 'grey'}}>
+      <View
+        style={{
+          display: 'flex',
+          overflow: 'hidden',
+          flex: 1,
+          flexDirection: 'column',
+          gap: 40,
+          backgroundColor: COLORS.primary,
+        }}>
+        <Text>{}</Text>
+        <HeaderHome />
+        <BodyHome onShowMessage={handleShowMessage} />
+
+        <CRBottomSheet ref={bottomSheetRef}>
+          <MessageBS msgId={currentMsgId} />
+        </CRBottomSheet>
+      </View>
+    </GestureHandlerRootView>
   );
 }

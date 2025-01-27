@@ -1,4 +1,4 @@
-import {formatDistanceToNow} from 'date-fns';
+import {format, formatDistanceToNow} from 'date-fns';
 import {vi} from 'date-fns/locale';
 import * as TTS from 'google-tts-api';
 import Sound from 'react-native-sound';
@@ -14,7 +14,7 @@ export const extract = (text: string) => {
   const amountPattern = /\+(([\d\.])*) VND/g;
   const namePattern = /ND:.*?([A-Z]{2,}(\s?[A-Z]*\s)*[A-Z]+)/g;
 
-  const amount = [...text.matchAll(amountPattern)][0][1].replace('.', '');
+  const amount = [...text.matchAll(amountPattern)][0][1].replaceAll('.', '');
   const name = [...text.matchAll(namePattern)]?.[0]?.[1] || '';
 
   return {
@@ -55,3 +55,8 @@ export const parseDate = (date: number) =>
   });
 
 export const formatNumber = (number: number) => number.toLocaleString('vi-VN');
+export const formatDate = (date: number | undefined) => {
+  if (!date) return '';
+  const d = new Date(Number(date));
+  return format(d, 'HH:mm dd:MM:yyyy');
+};

@@ -1,5 +1,6 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {extract} from '@src/utils';
+import {isToday} from 'date-fns';
 
 export interface IMessage {
   address: string;
@@ -13,15 +14,19 @@ export interface IMessageDetail {
   body: string;
   name: string;
   amount: number;
+  id: string;
+}
+
+export interface ISummary {
+  total: number;
+  count: number;
 }
 
 export interface MoneyState {
-  total: number;
   transaction: IMessageDetail[];
 }
 
 const initialState: MoneyState = {
-  total: 0,
   transaction: [],
 };
 
@@ -42,25 +47,21 @@ export const moneySlice = createSlice({
         date,
         amount,
         name: name,
+        id: date.toString(),
       });
-      state.total += amount;
     },
 
     resetTransaction: state => {
-      state.total = 0;
       state.transaction = [];
     },
   },
   selectors: {
-    selectTotalMoney: state => state.total,
     selectTransaction: state => state.transaction,
-    selectNumberTransaction: state => state.transaction.length,
   },
 });
 
 export const {addTransaction, resetTransaction} = moneySlice.actions;
-export const {selectTransaction, selectNumberTransaction, selectTotalMoney} =
-  moneySlice.selectors;
+export const {selectTransaction} = moneySlice.selectors;
 
 export const selectMostRecentTransactions = createSelector(
   [moneySlice.selectors.selectTransaction],
@@ -77,5 +78,39 @@ export const selectRecentTransactions = createSelector(
       return Date.now() - Number(t.date) > space;
     }),
 );
+
+export const selectTodaySummary = createSelector(
+  [moneySlice.selectors.selectTransaction],
+  trans => {
+    const _trans = trans.filter(t => {
+      const date = new Date(t.date);
+      return isToday(date);
+    });
+
+    const total = _trans.reduce((acc, curr) => acc + curr.amount, 0);
+
+    return {
+      total,
+      count: _trans.length,
+    };
+  },
+);
+
+export const selectTotalSummary = createSelector(
+  [moneySlice.selectors.selectTransaction],
+  trans => {
+    const total = trans.reduce((acc, curr) => acc + curr.amount, 0);
+
+    return {
+      total,
+      count: trans.length,
+    };
+  },
+);
+
+export const selectMessage = (id: string) =>
+  createSelector([moneySlice.selectors.selectTransaction], trans => {
+    return trans.find(tran => tran.id === id);
+  });
 
 export default moneySlice.reducer;

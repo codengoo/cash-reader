@@ -10,6 +10,12 @@ const styles = StyleSheet.create({
     gap: SPACE.lg,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
+
+  contentContainerStyle: {
+    gap: SPACE.lg,
+    display: "flex",
+    flexDirection: "row",
+  }
 });
 
 export default styles;

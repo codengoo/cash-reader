@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   textLogo: {
     color: COLORS.textPrimary,
     fontFamily: 'Lexend-SemiBold',
-    fontSize: 16,
+    fontSize: 28,
   },
 
   container: {

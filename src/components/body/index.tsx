@@ -5,11 +5,16 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@src/store';
-import {Pressable, ScrollView, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {Box} from './components/box';
 import styles from './styles';
 
-export function BodyHome() {
+interface IBodyProps {
+  onShowMessage: (message: string) => void;
+}
+
+export function BodyHome({onShowMessage}: IBodyProps) {
   const mostRecentTrans = useAppSelector(selectMostRecentTransactions);
   const recentTrans = useAppSelector(selectRecentTransactions);
   const dispatch = useAppDispatch();
@@ -32,8 +37,13 @@ export function BodyHome() {
       {mostRecentTrans.length > 0 && (
         <View style={styles.mostRecent}>
           <View style={styles.wrapper}>
-            {mostRecentTrans.map(item => (
-              <Box isRecent={false} data={item} key={item.date} />
+            {mostRecentTrans.reverse().map(item => (
+              <Box
+                isRecent={false}
+                data={item}
+                key={item.date}
+                onOpenMessagePress={onShowMessage}
+              />
             ))}
           </View>
         </View>
@@ -45,8 +55,12 @@ export function BodyHome() {
         )}
 
         <View style={styles.wrapper}>
-          {recentTrans.map(item => (
-            <Box data={item} key={item.date} />
+          {recentTrans.reverse().map(item => (
+            <Box
+              data={item}
+              key={item.date}
+              onOpenMessagePress={onShowMessage}
+            />
           ))}
         </View>
       </View>

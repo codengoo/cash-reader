@@ -1,8 +1,11 @@
 import {COLORS, PADDING} from '@src/constants';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: width - PADDING.xl * 2
+  },
 
   boxContainer: {
     borderRadius: 32,

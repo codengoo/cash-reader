@@ -33,9 +33,11 @@ class SmsReceiver(
             val sender = smsMessage.displayOriginatingAddress
             val body = smsMessage.messageBody
             val date = smsMessage.timestampMillis
+            Log.d("log", "Co du lieu 1")
 
             // Check if the incoming message is from the specified sender (if any)
             if (from == null || sender == from) {
+                Log.d("log", "Co du lieu ")
                 val messageDetails = Arguments.createMap()
                 messageDetails.putString("address", sender)
                 messageDetails.putString("body", body)

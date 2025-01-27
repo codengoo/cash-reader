@@ -10,6 +10,7 @@ import {
   persistReducer,
 } from 'redux-persist';
 import persistStore from 'redux-persist/es/persistStore';
+import appReducer from './features/app.slice';
 import moneyReducer from './features/money.slice';
 
 const persistConfig = {
@@ -17,7 +18,7 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const rootReducer = combineReducers({money: moneyReducer});
+const rootReducer = combineReducers({money: moneyReducer, app: appReducer});
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

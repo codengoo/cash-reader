@@ -1,1 +1,2 @@
-export * from "./money.slice"
+export * from './app.slice';
+export * from './money.slice';

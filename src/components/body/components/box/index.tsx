@@ -1,18 +1,23 @@
-import {MessageShareIcon} from '@components/icons';
+import {MessageShareIcon} from '@components/ui/icons';
 import {COLORS} from '@src/constants';
 import {IMessageDetail} from '@src/store';
 
 import {formatNumber, parseDate} from '@src/utils';
-import {Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import style from './styles';
 
 interface IBox {
   isRecent?: boolean;
   data: IMessageDetail;
+  onOpenMessagePress: (messageId: string) => void;
 }
 
-export function Box({isRecent = true, data}: IBox) {
+export function Box({isRecent = true, data, onOpenMessagePress}: IBox) {
   const styles = style(isRecent);
+
+  const onPressMessagePress = () => {
+    onOpenMessagePress(data.id);
+  };
 
   return (
     <View style={styles.container}>
@@ -29,10 +34,12 @@ export function Box({isRecent = true, data}: IBox) {
         <View style={styles.amountWrapper}>
           <Text style={styles.amount}>{formatNumber(data.amount)} đ</Text>
         </View>
-        <MessageShareIcon
-          color={isRecent ? COLORS.yellow500 : COLORS.green900}
-          size={28}
-        />
+        <Pressable onPress={onPressMessagePress}>
+          <MessageShareIcon
+            color={isRecent ? COLORS.yellow500 : COLORS.green900}
+            size={28}
+          />
+        </Pressable>
       </View>
     </View>
   );
