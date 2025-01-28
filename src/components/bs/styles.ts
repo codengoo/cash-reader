@@ -1,4 +1,5 @@
-import {COLORS, PADDING, SPACE} from '@src/constants';
+import {fontFamily} from '@components/helper';
+import {COLORS, FONT, PADDING, SPACE} from '@src/constants';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -10,8 +11,8 @@ export const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: 'Lexend-SemiBold',
-    fontSize: 16,
+    fontFamily: fontFamily('semibold'),
+    fontSize: FONT.small,
     color: COLORS.textPrimary,
   },
 
@@ -28,8 +29,8 @@ export const styles = StyleSheet.create({
   },
 
   bodyText: {
-    fontFamily: 'Lexend-SemiBold',
-    fontSize: 16,
+    fontFamily: fontFamily('semibold'),
+    fontSize: FONT.small,
     color: 'black',
   },
 
@@ -40,8 +41,8 @@ export const styles = StyleSheet.create({
   },
 
   footerText: {
-    fontFamily: 'Lexend-Medium',
-    fontSize: 16,
+    fontFamily: fontFamily('medium'),
+    fontSize: FONT.small,
     color: COLORS.yellow500,
   },
 });

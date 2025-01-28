@@ -5,11 +5,11 @@ import {MessageBS} from '@components/bs';
 import {CRBottomSheet} from '@components/ui';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useEffect, useRef, useState} from 'react';
-import {DeviceEventEmitter, Dimensions, StatusBar, View} from 'react-native';
+import {DeviceEventEmitter, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import NativeSmsReader from '../specs/NativeSmsReader';
-import {COLORS} from './constants';
+import {COLORS, space} from './constants';
 import {IMessage, addTransaction, useAppDispatch} from './store';
 import {generatePrompt, playSound} from './utils';
 
@@ -75,7 +75,7 @@ export default function MainApp() {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}} edges={['right', 'bottom', 'left']}>
       <GestureHandlerRootView
         style={{
           flex: 1,
@@ -91,7 +91,7 @@ export default function MainApp() {
             overflow: 'hidden',
             flex: 1,
             flexDirection: 'column',
-            gap: 40,
+            gap: space(40),
             backgroundColor: COLORS.primary,
           }}>
           <HeaderHome />

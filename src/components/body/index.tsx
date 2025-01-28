@@ -30,14 +30,14 @@ export function BodyHome({onShowMessage}: IBodyProps) {
       <View style={styles.action}>
         <Text style={styles.title}>Lịch sử</Text>
         <Pressable style={styles.clear} onPress={handlePressClear}>
-          <Text style={styles.textAction}>Xóa</Text>
+          <Text style={styles.textClear}>Xóa</Text>
         </Pressable>
       </View>
 
       {mostRecentTrans.length > 0 && (
         <View style={styles.mostRecent}>
           <View style={styles.wrapper}>
-            {mostRecentTrans.reverse().map(item => (
+            {mostRecentTrans.map(item => (
               <Box
                 isRecent={false}
                 data={item}
@@ -55,7 +55,7 @@ export function BodyHome({onShowMessage}: IBodyProps) {
         )}
 
         <View style={styles.wrapper}>
-          {recentTrans.reverse().map(item => (
+          {recentTrans.map(item => (
             <Box
               data={item}
               key={item.date}

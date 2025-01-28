@@ -1,5 +1,5 @@
 import {MessageShareIcon} from '@components/ui/icons';
-import {COLORS} from '@src/constants';
+import {COLORS, space} from '@src/constants';
 import {IMessageDetail} from '@src/store';
 
 import {formatNumber, parseDate} from '@src/utils';
@@ -37,7 +37,7 @@ export function Box({isRecent = true, data, onOpenMessagePress}: IBox) {
         <Pressable onPress={onPressMessagePress}>
           <MessageShareIcon
             color={isRecent ? COLORS.yellow500 : COLORS.green900}
-            size={28}
+            size={space(28)}
           />
         </Pressable>
       </View>

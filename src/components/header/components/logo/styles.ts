@@ -1,18 +1,19 @@
-import {COLORS} from '@src/constants';
+import { fontFamily } from '@components/helper';
+import {COLORS, FONT} from '@src/constants';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   textLogo: {
     color: COLORS.textPrimary,
-    fontFamily: 'Lexend-SemiBold',
-    fontSize: 28,
+    fontFamily: fontFamily("semibold"),
+    fontSize: FONT.large,
   },
 
   container: {
     display: "flex",
     flexDirection: "row",
     gap: 10,
-    alignItems: "center"
+    alignItems: "center",
   }
 });
 

@@ -65,18 +65,25 @@ export const {selectTransaction} = moneySlice.selectors;
 
 export const selectMostRecentTransactions = createSelector(
   [moneySlice.selectors.selectTransaction],
-  trans =>
-    trans.filter(t => {
+  trans =>{
+    const tmp = trans.filter(t => {
       return Date.now() - Number(t.date) <= space;
-    }),
+    });
+    return [...tmp].reverse();
+  }
+    
 );
 
 export const selectRecentTransactions = createSelector(
   [moneySlice.selectors.selectTransaction],
-  trans =>
-    trans.filter(t => {
+  trans => {
+    const tmp = trans.filter(t => {
       return Date.now() - Number(t.date) > space;
-    }),
+    });
+
+    return [...tmp].reverse();
+  }
+    
 );
 
 export const selectTodaySummary = createSelector(

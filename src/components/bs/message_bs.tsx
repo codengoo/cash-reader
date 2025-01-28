@@ -1,7 +1,7 @@
 import {CopyIcon} from '@components/ui';
 import {BottomSheetView} from '@gorhom/bottom-sheet';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {COLORS} from '@src/constants';
+import {COLORS, space} from '@src/constants';
 import {selectMessage, useAppSelector} from '@src/store';
 import {formatDate} from '@src/utils';
 import {Pressable, Text, View} from 'react-native';
@@ -24,7 +24,7 @@ export function MessageBS({msgId}: IMessageBSProps) {
         <Text style={styles.title}>Chi tiết tin nhắn</Text>
 
         <Pressable onPress={handleCopy}>
-          <CopyIcon color={COLORS.textPrimary} />
+          <CopyIcon color={COLORS.textPrimary} size={space(24)} />
         </Pressable>
       </View>
 

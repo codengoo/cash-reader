@@ -1,4 +1,5 @@
-import {COLORS, PADDING} from '@src/constants';
+import {fontFamily} from '@components/helper';
+import {COLORS, FONT, PADDING, space} from '@src/constants';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -10,26 +11,26 @@ const styles = StyleSheet.create({
   },
 
   innerContainer: {
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    borderTopLeftRadius: space(40),
+    borderTopRightRadius: space(40),
     boxShadow: '0 -4 20 0 #0000001a',
     padding: PADDING.xl,
     display: 'flex',
-    gap: 40,
+    gap: space(40),
     backgroundColor: COLORS.white,
     minHeight: '100%',
     paddingBottom: 60,
   },
 
   title: {
-    fontFamily: 'Lexend-SemiBold',
-    fontSize: 24,
+    fontFamily: fontFamily('semibold'),
+    fontSize: FONT.large,
     color: COLORS.textPrimary,
   },
 
   session: {
-    fontFamily: 'Lexend-SemiBold',
-    fontSize: 16,
+    fontFamily: fontFamily('semibold'),
+    fontSize: FONT.medium,
     color: COLORS.textPrimary,
   },
 
@@ -51,14 +52,16 @@ const styles = StyleSheet.create({
   clear: {
     display: 'flex',
     backgroundColor: COLORS.yellow200,
-    borderRadius: 20,
+    borderRadius: space(20),
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: PADDING.xl,
+    paddingVertical: PADDING.sm
   },
 
-  textAction: {
-    fontFamily: 'Lexend-SemiBold',
+  textClear: {
+    fontFamily: fontFamily('semibold'),
+    fontSize: FONT.medium,
     color: COLORS.textPrimary,
   },
 });

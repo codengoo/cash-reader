@@ -1,4 +1,5 @@
-import {COLORS, PADDING} from '@src/constants';
+import {fontFamily} from '@components/helper';
+import {COLORS, FONT, PADDING, space} from '@src/constants';
 import {StyleSheet} from 'react-native';
 
 const style = (isRecent: boolean) =>
@@ -37,14 +38,14 @@ const style = (isRecent: boolean) =>
     },
 
     name: {
-      fontFamily: 'Lexend-SemiBold',
-      fontSize: 16,
+      fontFamily: fontFamily('semibold'),
+      fontSize: FONT.small,
       color: isRecent ? COLORS.yellow500 : COLORS.green900,
     },
 
     time: {
-      fontFamily: 'Lexend-SemiBold',
-      fontSize: 12,
+      fontFamily: fontFamily('semibold'),
+      fontSize: FONT.extraSmall,
       color: isRecent ? COLORS.yellow500 : COLORS.green900,
     },
 
@@ -58,8 +59,8 @@ const style = (isRecent: boolean) =>
     },
 
     amount: {
-      fontFamily: 'Lexend-SemiBold',
-      fontSize: isRecent ? 24 : 36,
+      fontFamily: fontFamily('semibold'),
+      fontSize: isRecent ? FONT.medium: FONT.large,
       color: isRecent ? COLORS.yellow500 : COLORS.green500,
     },
 
@@ -68,7 +69,7 @@ const style = (isRecent: boolean) =>
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      height: isRecent ? undefined : 90,
+      height: isRecent ? void 0 : space(64),
     },
   });
 
