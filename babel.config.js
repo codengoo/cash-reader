@@ -1,5 +1,6 @@
 module.exports = {
-  presets: ['module:@react-native/babel-preset'],
+  // presets: ['module:@react-native/babel-preset'],
+  presets: ['babel-preset-expo'],
   plugins: [
     [
       require.resolve('babel-plugin-module-resolver'),
